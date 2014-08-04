@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 DATETIME=`date +%Y%m%d-%H%M%S`
 HOST=`hostname --short`
@@ -9,7 +9,7 @@ STAGEDIR='/srv/backup/stage/mysql'
 BACKUPDIR='/srv/backup/mysql'
 #DBUSER='username'
 #DBPASS='password'
-. ./mysql_perms.conf
+. /root/mysql_perms.conf
 
 # Dump ALL databases.
 /usr/bin/mysqldump \
@@ -42,3 +42,5 @@ tar -cvzf ${BACKUPDIR}/${BACKUPNAME}_${DATETIME}.tar.gz -C ${STAGEDIR} . && rm -
 
 # Move the SQL dump back to stage.
 mv ${BACKUPDIR}/${DUMPNAME}_${DATETIME}.sql ${STAGEDIR}/${DUMPNAME}_${DATETIME}.sql
+
+find ${BACKUPDIR} -name *.tar.gz -mtime +14 -exec rm {} \;
